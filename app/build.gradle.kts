@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -6,7 +9,17 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.room)
 }
+
+// Load local.properties
+val localProperties = Properties().apply {
+    load(FileInputStream(rootProject.file("local.properties")))
+}
+
+
+val apiKey: String = localProperties.getProperty("API_KEY") ?: ""
+val baseUrl: String = localProperties.getProperty("BASE_URL") ?: ""
 
 android {
     namespace = "com.kaizencoder.newzify"
@@ -20,6 +33,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
 
     buildTypes {
@@ -40,6 +55,10 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+    room{
+        schemaDirectory("$projectDir/schemas")
     }
 }
 
@@ -82,7 +101,14 @@ dependencies {
     implementation(libs.coil.network)
     implementation(libs.gilde)
 
-    implementation(libs.konsist)
+    testImplementation(libs.konsist)
+
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    testImplementation(libs.room.testing)
+
 }
 
 detekt {
