@@ -1,14 +1,10 @@
 package com.kaizencoder.newzify.domain.usecases
 
-import android.util.Log
-import androidx.paging.PagingData
 import com.kaizencoder.newzify.data.DataResult
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.domain.repository.HeadlinesRepository
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,7 +41,8 @@ class GetHeadlinesUseCase @Inject constructor(private val headlinesRepository: H
             Timber.e(ex, "IllegalArgumentException in GetHeadlinesUseCase")
             emit(GetHeadlinesUseCaseResult.Error("Invalid data provided. Please try again."))
         } catch (ex: Exception){
-            emit(GetHeadlinesUseCaseResult.Error(ex.localizedMessage ?: "Something is not right. Please try again."))
+            Timber.e(ex, "Exception in GetHeadlinesUseCase")
+            emit(GetHeadlinesUseCaseResult.Error("Something is not right. Please try again."))
         }
     }
 

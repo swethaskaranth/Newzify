@@ -91,6 +91,22 @@ class GetHeadlinesUseCaseTest {
     fun `getHeadlines should emit an error state when repository throws an exception`() = runTest {
         every { headlinesRepositoryMock.getHeadlines() } throws RuntimeException()
         val result = getHeadLinesUseCase.execute().last()
+
+        assert(result is GetHeadlinesUseCaseResult.Error)
+        assert((result as GetHeadlinesUseCaseResult.Error).message == "Something is not right. Please try again.")
+    }
+
+    @Test
+    fun `getHeadlines should emit an error state when repository throws an IllegalStateException`() = runTest {
+        every { headlinesRepositoryMock.getHeadlines() } throws IllegalStateException()
+        val result = getHeadLinesUseCase.execute().last()
+        assert(result is GetHeadlinesUseCaseResult.Error)
+    }
+
+    @Test
+    fun `getHeadlines should emit an error state when repository throws an IllegalArgumentException`() = runTest {
+        every { headlinesRepositoryMock.getHeadlines() } throws IllegalArgumentException()
+        val result = getHeadLinesUseCase.execute().last()
         assert(result is GetHeadlinesUseCaseResult.Error)
     }
 
