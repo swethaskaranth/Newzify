@@ -6,34 +6,34 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ArticleDto(
-    @Json(name = "apiUrl")
+    @field:Json(name = "apiUrl")
     val apiUrl: String,
-    @Json(name = "id")
+    @field:Json(name = "id")
     val id: String,
-    @Json(name = "isHosted")
+    @field:Json(name = "isHosted")
     val isHosted: Boolean,
-    @Json(name = "pillarId")
+    @field:Json(name = "pillarId")
     val pillarId: String,
-    @Json(name = "pillarName")
+    @field:Json(name = "pillarName")
     val pillarName: String,
-    @Json(name = "sectionId")
+    @field:Json(name = "sectionId")
     val sectionId: String,
-    @Json(name = "sectionName")
+    @field:Json(name = "sectionName")
     val sectionName: String,
-    @Json(name = "type")
+    @field:Json(name = "type")
     val type: String,
-    @Json(name = "webPublicationDate")
+    @field:Json(name = "webPublicationDate")
     val webPublicationDate: String,
-    @Json(name = "webTitle")
+    @field:Json(name = "webTitle")
     val webTitle: String,
-    @Json(name = "webUrl")
+    @field:Json(name = "webUrl")
     val webUrl: String,
-    @Json(name = "headline")
+    @field:Json(name = "headline")
     val headline: String,
-    @Json(name = "byline")
+    @field:Json(name = "byline")
     val byline: String,
-    @Json(name = "thumbnail")
+    @field:Json(name = "thumbnail")
     val thumbnail: String,
-    @Json(name = "shortUrl")
+    @field:Json(name = "shortUrl")
     val shortUrl: String
 )

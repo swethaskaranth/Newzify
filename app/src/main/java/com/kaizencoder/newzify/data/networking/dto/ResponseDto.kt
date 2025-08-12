@@ -6,22 +6,22 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ResponseDto(
-    @Json(name = "currentPage")
+    @field:Json(name = "currentPage")
     val currentPage: Int,
-    @Json(name = "orderBy")
+    @field:Json(name = "orderBy")
     val orderBy: String,
-    @Json(name = "pageSize")
+    @field:Json(name = "pageSize")
     val pageSize: Int,
-    @Json(name = "pages")
+    @field:Json(name = "pages")
     val pages: Int,
-    @Json(name = "results")
+    @field:Json(name = "results")
     val results: List<ArticleDto>,
-    @Json(name = "startIndex")
+    @field:Json(name = "startIndex")
     val startIndex: Int,
-    @Json(name = "status")
+    @field:Json(name = "status")
     val status: String,
-    @Json(name = "total")
+    @field:Json(name = "total")
     val total: Int,
-    @Json(name = "userTier")
+    @field:Json(name = "userTier")
     val userTier: String
 )

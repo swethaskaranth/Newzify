@@ -25,6 +25,8 @@ glide_version  = "1.0.0-beta01"
 detekt_version = "1.23.8"
 konsist_version = "0.17.3"
 room_version = "2.7.2"
+mockk_version = "1.14.5"
+timber_version = "5.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +52,7 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose"}
 kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines"}
 kotlin-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines"}
+kotlin-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines"}
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav_version"}
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging_version"}
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging_version"}
@@ -62,6 +65,8 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room_version"}
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room_version"}
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room_version"}
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk_version"}
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber_version"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

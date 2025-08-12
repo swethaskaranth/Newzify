@@ -91,6 +91,7 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.coroutines.android)
+    testImplementation(libs.kotlin.coroutines.test)
 
     implementation(libs.navigation.compose)
 
@@ -108,6 +109,10 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.paging)
     testImplementation(libs.room.testing)
+
+    testImplementation(libs.mockk)
+
+    implementation(libs.timber)
 
 }
 

@@ -6,6 +6,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class HeadlinesResponse(
-    @Json(name = "response")
+    @field:Json(name = "response")
     val response: ResponseDto
 )
