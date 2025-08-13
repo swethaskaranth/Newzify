@@ -2,6 +2,8 @@ package com.kaizencoder.newzify.di
 
 import com.kaizencoder.newzify.BuildConfig
 import com.kaizencoder.newzify.data.networking.NewsApiService
+import com.kaizencoder.newzify.data.repository.HeadlinesRepositoryImpl
+import com.kaizencoder.newzify.domain.repository.HeadlinesRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -42,4 +44,8 @@ class AppModule {
     @Provides
     fun newsApiService(retrofit: Retrofit): NewsApiService =
         retrofit.create(NewsApiService::class.java)
+
+    @Provides
+    fun headlinesRepository(): HeadlinesRepository =
+        HeadlinesRepositoryImpl()
 }
