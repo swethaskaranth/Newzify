@@ -1,5 +1,6 @@
 package com.kaizencoder.newzify.presentation.headlines
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -85,18 +86,8 @@ fun ArticleItem(article: Article) {
         shape = RectangleShape
     ) {
         Column {
-            AsyncImage(
-                model = article.thumbnail,
-                contentDescription = stringResource(
-                    R.string.article_thumbnail_content_description
-                ),
-                contentScale = ContentScale.Crop,
-                alignment = Alignment.TopCenter,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(ratio = 16f / 9f)
 
-            )
+            ArticleThumbnail(article.thumbnail)
 
             Text(
                 text = article.headline,
@@ -110,46 +101,64 @@ fun ArticleItem(article: Article) {
                 overflow = TextOverflow.Ellipsis
             )
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        vertical = 4.dp,
-                        horizontal = 16.dp
-                    )
-            ) {
-                Text(
-                    text = article.timeSincePublished
-                )
-
-                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Icon(
-                        painter = painterResource(R.drawable.icon_save),
-                        contentDescription = stringResource(
-                            R.string.save_icon_content_description
-                        ),
-                        modifier = Modifier
-                            .padding(all = 8.dp)
-                            .size(24.dp)
-                    )
-
-                    Icon(
-                        painter = painterResource(R.drawable.icon_share),
-                        contentDescription = stringResource(
-                            R.string.share_icon_content_description
-                        ),
-                        modifier = Modifier
-                            .padding(all = 8.dp)
-                            .size(24.dp)
-
-                    )
-                }
-
-            }
+            ArticleInfo(article)
         }
     }
+}
+
+@Composable
+private fun ArticleInfo(article: Article) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                vertical = 4.dp,
+                horizontal = 16.dp
+            )
+    ) {
+        Text(
+            text = article.timeSincePublished
+        )
+
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            ArticleAction(
+                id = R.drawable.icon_save,
+                contentDescription = stringResource(R.string.save_icon_content_description))
+            ArticleAction(
+                id = R.drawable.icon_share,
+                contentDescription = stringResource(R.string.share_icon_content_description))
+        }
+
+    }
+}
+
+@Composable
+fun ArticleAction(@DrawableRes id: Int,
+                  contentDescription: String) {
+    Icon(
+        painter = painterResource(id),
+        contentDescription = contentDescription,
+        modifier = Modifier
+            .padding(all = 8.dp)
+            .size(24.dp)
+    )
+}
+@Composable
+fun ArticleThumbnail(thumbnail: String) {
+    AsyncImage(
+        model = thumbnail,
+        contentDescription = stringResource(
+            R.string.article_thumbnail_content_description
+        ),
+        contentScale = ContentScale.Crop,
+        alignment = Alignment.TopCenter,
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(ratio = 16f / 9f)
+
+    )
 }
 
 @Preview(showSystemUi = true)

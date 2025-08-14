@@ -1,6 +1,7 @@
 package com.kaizencoder.newzify.data.repository
 
 import androidx.sqlite.SQLiteException
+import com.kaizencoder.newzify.Constants
 import com.kaizencoder.newzify.data.DataResult
 import com.kaizencoder.newzify.data.local.ArticleDao
 import com.kaizencoder.newzify.data.networking.NewsApiService
@@ -32,6 +33,7 @@ class HeadlinesRepositoryTest {
     private val newsApiService = mockk<NewsApiService>()
     private val articleDao = mockk<ArticleDao>()
     private val headlinesRepository = HeadlinesRepositoryImpl(newsApiService, articleDao)
+    val timeToLive = Constants.TIME_TO_LIVE
 
     @Test
     fun headlinesRepository_getHeadlines_emitsCachedHeadlines() = runTest {
@@ -75,7 +77,7 @@ class HeadlinesRepositoryTest {
         every { articleDao.getHeadlines() } returns articleEntities
             .map {
                 it.copy(
-                    savedAt = System.currentTimeMillis() - TTL - 1
+                    savedAt = System.currentTimeMillis() - timeToLive - 1
                 )
             }
         coEvery { newsApiService.getLatestHeadlines(any()) } returns mockk()
@@ -98,7 +100,7 @@ class HeadlinesRepositoryTest {
             articleEntities
                 .map {
                     it.copy(
-                        savedAt = System.currentTimeMillis() - TTL - 1
+                        savedAt = System.currentTimeMillis() - timeToLive - 1
                     )
                 } andThen freshArticleEntities
 
@@ -118,7 +120,7 @@ class HeadlinesRepositoryTest {
                 articleEntities
                     .map {
                         it.copy(
-                            savedAt = System.currentTimeMillis() - TTL - 1
+                            savedAt = System.currentTimeMillis() - timeToLive - 1
                         )
                     }
 
@@ -142,7 +144,7 @@ class HeadlinesRepositoryTest {
             articleEntities
                 .map {
                     it.copy(
-                        savedAt = System.currentTimeMillis() - TTL - 1
+                        savedAt = System.currentTimeMillis() - timeToLive - 1
                     )
                 },
             freshArticleEntities
@@ -171,7 +173,7 @@ class HeadlinesRepositoryTest {
         every { articleDao.getHeadlines() } returns articleEntities
                 .map {
                     it.copy(
-                        savedAt = System.currentTimeMillis() - TTL - 1
+                        savedAt = System.currentTimeMillis() - timeToLive - 1
                     )
                 }
 
@@ -189,7 +191,7 @@ class HeadlinesRepositoryTest {
         every { articleDao.getHeadlines() } returns articleEntities
             .map {
                 it.copy(
-                    savedAt = System.currentTimeMillis() - TTL - 1
+                    savedAt = System.currentTimeMillis() - timeToLive - 1
                 )
             }
 
@@ -213,7 +215,7 @@ class HeadlinesRepositoryTest {
         every { articleDao.getHeadlines() } returns articleEntities
             .map {
                 it.copy(
-                    savedAt = System.currentTimeMillis() - TTL - 1
+                    savedAt = System.currentTimeMillis() - timeToLive - 1
                 )
             }
 
@@ -231,7 +233,7 @@ class HeadlinesRepositoryTest {
         every { articleDao.getHeadlines() } returns articleEntities
             .map {
                 it.copy(
-                    savedAt = System.currentTimeMillis() - TTL - 1
+                    savedAt = System.currentTimeMillis() - timeToLive - 1
                 )
             }
 
@@ -244,7 +246,7 @@ class HeadlinesRepositoryTest {
 
     }
 
-    val TTL = 15 * 60 * 1000L
+
 
     val articleEntities = listOf(
         ArticleEntity(

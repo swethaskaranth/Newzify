@@ -1,6 +1,7 @@
 package com.kaizencoder.newzify.data.repository
 
 import androidx.sqlite.SQLiteException
+import com.kaizencoder.newzify.Constants
 import com.kaizencoder.newzify.data.DataResult
 import com.kaizencoder.newzify.data.local.ArticleDao
 import com.kaizencoder.newzify.data.local.entity.toArticleDomain
@@ -24,8 +25,6 @@ class HeadlinesRepositoryImpl @Inject constructor(
 ) :
     HeadlinesRepository {
 
-    private val TTL = 15 * 60 * 1000L
-
     override fun getHeadlines(): Flow<DataResult<List<Article>>> = flow<DataResult<List<Article>>> {
         val articles = getArticlesFromDb()
 
@@ -37,7 +36,7 @@ class HeadlinesRepositoryImpl @Inject constructor(
                 }
             ))
 
-        if (articles.isEmpty() || articles[0].savedAt < System.currentTimeMillis() - TTL)
+        if (articles.isEmpty() || articles[0].savedAt < System.currentTimeMillis() - Constants.TIME_TO_LIVE)
             emit(fetchAndSaveArticles())
 
 
