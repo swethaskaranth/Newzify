@@ -10,9 +10,11 @@ import com.kaizencoder.newzify.data.networking.dto.toArticleEntity
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.domain.repository.HeadlinesRepository
 import com.squareup.moshi.JsonDataException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import okio.IOException
 import retrofit2.HttpException
 import timber.log.Timber
@@ -68,6 +70,7 @@ class HeadlinesRepositoryImpl @Inject constructor(
             }
         }
     }
+        .flowOn(Dispatchers.IO)
 
     private suspend fun fetchAndSaveArticles(): DataResult<List<Article>> {
         val response = newsApiService.getLatestHeadlines().response
