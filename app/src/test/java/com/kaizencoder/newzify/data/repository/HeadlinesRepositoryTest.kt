@@ -6,6 +6,7 @@ import com.kaizencoder.newzify.data.DataResult
 import com.kaizencoder.newzify.data.local.ArticleDao
 import com.kaizencoder.newzify.data.networking.NewsApiService
 import com.kaizencoder.newzify.data.networking.dto.ArticleDto
+import com.kaizencoder.newzify.data.networking.dto.ArticleFields
 import com.kaizencoder.newzify.data.networking.dto.HeadlinesResponse
 import com.kaizencoder.newzify.data.networking.dto.ResponseDto
 import com.kaizencoder.newzify.domain.model.Article
@@ -321,10 +322,6 @@ class HeadlinesRepositoryTest {
     val newArticlesFromAPI = listOf(
         ArticleDto(
             id = "ID4",
-            headline = "Headline",
-            byline = "Byline",
-            thumbnail = "Thumbnail",
-            shortUrl = "ShortUrl",
             webTitle = "WebTitle",
             webUrl = "WebUrl",
             webPublicationDate = "PublishedDate",
@@ -334,14 +331,16 @@ class HeadlinesRepositoryTest {
             pillarName = "PillarName",
             sectionId = "SectionId",
             sectionName = "SectionName",
-            type = "Type"
+            type = "Type",
+            fields = ArticleFields(
+                headline = "Headline",
+                byline = "Byline",
+                thumbnail = "Thumbnail",
+                shortUrl = "ShortUrl",
+            )
         ),
         ArticleDto(
             id = "ID5",
-            headline = "Headline",
-            byline = "Byline",
-            thumbnail = "Thumbnail",
-            shortUrl = "ShortUrl",
             webTitle = "WebTitle",
             webUrl = "WebUrl",
             webPublicationDate = "PublishedDate",
@@ -351,14 +350,16 @@ class HeadlinesRepositoryTest {
             pillarName = "PillarName",
             sectionId = "SectionId",
             sectionName = "SectionName",
-            type = "Type"
+            type = "Type",
+            fields = ArticleFields(
+                headline = "Headline",
+                byline = "Byline",
+                thumbnail = "Thumbnail",
+                shortUrl = "ShortUrl",
+            )
         ),
         ArticleDto(
             id = "ID6",
-            headline = "Headline",
-            byline = "Byline",
-            thumbnail = "Thumbnail",
-            shortUrl = "ShortUrl",
             webTitle = "WebTitle",
             webUrl = "WebUrl",
             webPublicationDate = "PublishedDate",
@@ -368,7 +369,13 @@ class HeadlinesRepositoryTest {
             pillarName = "PillarName",
             sectionId = "SectionId",
             sectionName = "SectionName",
-            type = "Type"
+            type = "Type",
+            fields = ArticleFields(
+                headline = "Headline",
+                byline = "Byline",
+                thumbnail = "Thumbnail",
+                shortUrl = "ShortUrl",
+            )
         )
     )
 
