@@ -10,5 +10,5 @@ interface NewsApiService {
     @GET("search")
     suspend fun getLatestHeadlines(
         @Query("api-key") apiKey: String = BuildConfig.API_KEY,
-        @Query("query-fields") queryFields: String = "headline,byline,thumbnail,short-url",) : HeadlinesResponse
+        @Query("show-fields") queryFields: String = "headline,byline,thumbnail,short-url",) : HeadlinesResponse
 }

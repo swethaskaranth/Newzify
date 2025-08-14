@@ -8,5 +8,5 @@ data class Article(
     val shortUrl: String,
     val webUrl: String,
     val webTitle: String,
-    val webPublicationDate: String
+    val timeSincePublished: String
 )
