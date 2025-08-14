@@ -5,7 +5,7 @@ import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.domain.repository.SavedArticlesRepository
 import javax.inject.Inject
 
-class SaveHeadlinesUseCase @Inject constructor(
+class SaveArticlesUseCase @Inject constructor(
     private val savedArticlesRepository: SavedArticlesRepository
 ) {
 

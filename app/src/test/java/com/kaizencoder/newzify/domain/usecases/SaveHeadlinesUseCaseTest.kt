@@ -3,7 +3,7 @@ package com.kaizencoder.newzify.domain.usecases
 import com.kaizencoder.newzify.data.DataResult
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.domain.repository.SavedArticlesRepository
-import com.kaizencoder.newzify.domain.usecases.SaveHeadlinesUseCase.SaveHeadlinesUseCaseResult
+import com.kaizencoder.newzify.domain.usecases.SaveArticlesUseCase.SaveHeadlinesUseCaseResult
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -13,7 +13,7 @@ import org.junit.Test
 class SaveHeadlinesUseCaseTest {
 
     private val savedArticlesRepository: SavedArticlesRepository = mockk()
-    private val saveHeadlinesUseCase = SaveHeadlinesUseCase(savedArticlesRepository)
+    private val saveHeadlinesUseCase = SaveArticlesUseCase(savedArticlesRepository)
 
     //saveHeadlines execute method calls the repository method with the same parameter
     @Test

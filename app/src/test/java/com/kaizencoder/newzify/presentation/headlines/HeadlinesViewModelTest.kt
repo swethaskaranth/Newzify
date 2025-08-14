@@ -2,6 +2,7 @@ package com.kaizencoder.newzify.presentation.headlines
 
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.domain.usecases.GetHeadlinesUseCase
+import com.kaizencoder.newzify.domain.usecases.SaveArticlesUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -24,12 +25,16 @@ class HeadlinesViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private val getHeadlinesUseCase = mockk<GetHeadlinesUseCase>()
+    private val savedArticlesUseCase = mockk<SaveArticlesUseCase>()
     private lateinit var headlinesViewModel: HeadlinesViewModel
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        headlinesViewModel = HeadlinesViewModel(getHeadlinesUseCase)
+        headlinesViewModel = HeadlinesViewModel(
+            getHeadlinesUseCase,
+            savedArticlesUseCase
+        )
     }
 
     @After
@@ -55,14 +60,41 @@ class HeadlinesViewModelTest {
     @Test
     fun headlinesViewModel_getHeadlines_updatesStateWithArticles() = runTest {
         val articles = listOf(
-            Article("ID1","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate"),
-            Article("ID2","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate"),
-            Article("ID3","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate")
+            Article(
+                "ID1",
+                "Headline",
+                "Byline",
+                "Thumbnail",
+                "ShortUrl",
+                "WebUrl",
+                "WebTitle",
+                "PublishedDate"
+            ),
+            Article(
+                "ID2",
+                "Headline",
+                "Byline",
+                "Thumbnail",
+                "ShortUrl",
+                "WebUrl",
+                "WebTitle",
+                "PublishedDate"
+            ),
+            Article(
+                "ID3",
+                "Headline",
+                "Byline",
+                "Thumbnail",
+                "ShortUrl",
+                "WebUrl",
+                "WebTitle",
+                "PublishedDate"
+            )
         )
 
         every { getHeadlinesUseCase.execute() } returns flowOf(
-                    GetHeadlinesUseCase.GetHeadlinesUseCaseResult.Success(articles)
-                )
+            GetHeadlinesUseCase.GetHeadlinesUseCaseResult.Success(articles)
+        )
 
         headlinesViewModel.getHeadlines()
         advanceUntilIdle()
@@ -81,7 +113,10 @@ class HeadlinesViewModelTest {
         headlinesViewModel.getHeadlines()
         advanceUntilIdle()
 
-        assertEquals("Something is not right. Please try again.", headlinesViewModel.uiState.value.errorMessage)
+        assertEquals(
+            "Something is not right. Please try again.",
+            headlinesViewModel.uiState.value.errorMessage
+        )
     }
 
 }
