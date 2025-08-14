@@ -1,6 +1,7 @@
 package com.kaizencoder.newzify.data.networking.dto
 
 
+import com.kaizencoder.newzify.data.local.entity.Article
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -36,4 +37,16 @@ data class ArticleDto(
     val thumbnail: String,
     @field:Json(name = "shortUrl")
     val shortUrl: String
+)
+
+fun ArticleDto.toArticleEntity(savedByUser: Boolean = false) = Article(
+    articleId = this.id,
+    headline = this.headline,
+    byline = this.byline,
+    thumbnail = this.thumbnail,
+    shortUrl = this.shortUrl,
+    webUrl = this.webUrl,
+    webTitle = this.webTitle,
+    webPublicationDate = this.webPublicationDate,
+    savedByUser = savedByUser
 )

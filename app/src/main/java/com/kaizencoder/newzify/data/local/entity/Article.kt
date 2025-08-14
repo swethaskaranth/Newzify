@@ -18,3 +18,15 @@ data class Article(
     @ColumnInfo(name = "saved_by_user") val savedByUser: Boolean = false,
     @ColumnInfo(name = "saved_at") val savedAt: Long = System.currentTimeMillis()
     )
+
+fun Article.toArticleDomain() =
+    com.kaizencoder.newzify.domain.model.Article(
+        articleId = this.articleId,
+        headline = this.headline,
+        byline = this.byline,
+        thumbnail = this.thumbnail,
+        shortUrl = this.shortUrl,
+        webUrl = this.webUrl,
+        webTitle = this.webTitle,
+        timeSincePublished = this.webPublicationDate
+    )
