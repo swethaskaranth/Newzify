@@ -14,7 +14,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
@@ -37,13 +38,18 @@ import com.kaizencoder.newzify.domain.model.Article
 @Composable
 fun HeadlinesScreen(
     modifier: Modifier = Modifier,
+    snackBarHostState: SnackbarHostState,
     headlinesViewModel: HeadlinesViewModel = viewModel()
 ) {
 
     val uiState = headlinesViewModel.uiState.collectAsStateWithLifecycle()
 
+
     LaunchedEffect(true) {
         headlinesViewModel.getHeadlines()
+        headlinesViewModel.savedEvent.collect { message ->
+            snackBarHostState.showSnackbar(message)
+        }
     }
 
     when {
@@ -77,7 +83,9 @@ fun HeadlinesScreen(
                 modifier.fillMaxSize()
             ) {
                 items(uiState.value.articles) { article ->
-                    ArticleItem(article)
+                    ArticleItem(article) {
+                        headlinesViewModel.saveHeadlines(article)
+                    }
                 }
             }
         }
@@ -87,7 +95,10 @@ fun HeadlinesScreen(
 }
 
 @Composable
-fun ArticleItem(article: Article) {
+fun ArticleItem(
+    article: Article,
+    onShareClick: () -> Unit
+) {
     Card(
         shape = RectangleShape
     ) {
@@ -107,13 +118,19 @@ fun ArticleItem(article: Article) {
                 overflow = TextOverflow.Ellipsis
             )
 
-            ArticleInfo(article)
+            ArticleInfo(
+                article,
+                onShareClick
+            )
         }
     }
 }
 
 @Composable
-private fun ArticleInfo(article: Article) {
+private fun ArticleInfo(
+    article: Article,
+    onShareClick: () -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -131,26 +148,38 @@ private fun ArticleInfo(article: Article) {
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             ArticleAction(
                 id = R.drawable.icon_save,
-                contentDescription = stringResource(R.string.save_icon_content_description))
+                contentDescription = stringResource(R.string.save_icon_content_description),
+                onClick = onShareClick
+            )
             ArticleAction(
                 id = R.drawable.icon_share,
-                contentDescription = stringResource(R.string.share_icon_content_description))
+                contentDescription = stringResource(R.string.share_icon_content_description)
+            ) {
+
+            }
         }
 
     }
 }
 
 @Composable
-fun ArticleAction(@DrawableRes id: Int,
-                  contentDescription: String) {
-    Icon(
-        painter = painterResource(id),
-        contentDescription = contentDescription,
-        modifier = Modifier
-            .padding(all = 8.dp)
-            .size(24.dp)
-    )
+fun ArticleAction(
+    @DrawableRes id: Int,
+    contentDescription: String,
+    onClick: () -> Unit
+) {
+    IconButton(onClick) {
+        Icon(
+            painter = painterResource(id),
+            contentDescription = contentDescription,
+            modifier = Modifier
+                .padding(all = 8.dp)
+                .size(24.dp)
+        )
+    }
+
 }
+
 @Composable
 fun ArticleThumbnail(thumbnail: String) {
     AsyncImage(
@@ -181,5 +210,7 @@ private fun ArticleItemPreview() {
             "WebTitle",
             "1d"
         )
-    )
+    ) {
+
+    }
 }

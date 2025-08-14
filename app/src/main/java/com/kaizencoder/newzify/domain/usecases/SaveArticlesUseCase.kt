@@ -14,7 +14,7 @@ class SaveArticlesUseCase @Inject constructor(
         data class Error(val message: String) : SaveHeadlinesUseCaseResult()
     }
 
-    fun execute(article: Article): SaveHeadlinesUseCaseResult {
+    suspend fun execute(article: Article): SaveHeadlinesUseCaseResult {
         val dataResult =  savedArticlesRepository.saveArticle(article)
         return when(dataResult){
             is DataResult.Success -> SaveHeadlinesUseCaseResult.Success

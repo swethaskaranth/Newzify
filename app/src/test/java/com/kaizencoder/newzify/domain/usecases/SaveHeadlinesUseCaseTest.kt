@@ -4,10 +4,12 @@ import com.kaizencoder.newzify.data.DataResult
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.domain.repository.SavedArticlesRepository
 import com.kaizencoder.newzify.domain.usecases.SaveArticlesUseCase.SaveHeadlinesUseCaseResult
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
-import org.junit.Assert.*
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SaveHeadlinesUseCaseTest {
@@ -15,31 +17,28 @@ class SaveHeadlinesUseCaseTest {
     private val savedArticlesRepository: SavedArticlesRepository = mockk()
     private val saveHeadlinesUseCase = SaveArticlesUseCase(savedArticlesRepository)
 
-    //saveHeadlines execute method calls the repository method with the same parameter
     @Test
-    fun saveHeadlines_callsRepositoryMethod() {
+    fun saveHeadlines_callsRepositoryMethod() = runTest {
         val article = Article("ID1","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate")
-        every { savedArticlesRepository.saveArticle(article) } returns DataResult.Success(Unit)
+        coEvery { savedArticlesRepository.saveArticle(article) } returns DataResult.Success(Unit)
         saveHeadlinesUseCase.execute( article )
 
-        verify { savedArticlesRepository.saveArticle(article) }
+        coVerify { savedArticlesRepository.saveArticle(article) }
     }
 
-    //saveHeadlines execute method returns success when repository call is successful
     @Test
-    fun saveHeadlines_returnsSuccess_whenRepositoryCallIsSuccessful() {
+    fun saveHeadlines_returnsSuccess_whenRepositoryCallIsSuccessful() = runTest {
         val article = Article("ID1","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate")
-        every { savedArticlesRepository.saveArticle(article) } returns DataResult.Success(Unit)
+        coEvery { savedArticlesRepository.saveArticle(article) } returns DataResult.Success(Unit)
         val result = saveHeadlinesUseCase.execute( article )
 
         assertTrue(result is SaveHeadlinesUseCaseResult.Success)
     }
 
-    //saveHeadlines execute method returns error when repository call fails
     @Test
-    fun saveHeadlines_returnsError_whenRepositoryCallFailsWithCacheError() {
+    fun saveHeadlines_returnsError_whenRepositoryCallFailsWithCacheError() = runTest {
         val article = Article("ID1","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate")
-        every { savedArticlesRepository.saveArticle(article) } returns DataResult.CacheError
+        coEvery { savedArticlesRepository.saveArticle(article) } returns DataResult.CacheError
         val result = saveHeadlinesUseCase.execute( article )
 
         assertTrue(result is SaveHeadlinesUseCaseResult.Error)
@@ -47,9 +46,9 @@ class SaveHeadlinesUseCaseTest {
     }
 
     @Test
-    fun saveHeadlines_returnsError_whenRepositoryCallFailsWithUnknownError() {
+    fun saveHeadlines_returnsError_whenRepositoryCallFailsWithUnknownError() = runTest {
         val article = Article("ID1","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate")
-        every { savedArticlesRepository.saveArticle(article) } returns DataResult.UnknownError
+        coEvery { savedArticlesRepository.saveArticle(article) } returns DataResult.UnknownError
         val result = saveHeadlinesUseCase.execute( article )
 
         assertTrue(result is SaveHeadlinesUseCaseResult.Error)

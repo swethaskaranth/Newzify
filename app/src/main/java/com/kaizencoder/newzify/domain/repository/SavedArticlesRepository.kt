@@ -5,5 +5,5 @@ import com.kaizencoder.newzify.domain.model.Article
 
 interface SavedArticlesRepository{
 
-    fun saveArticle(article: Article): DataResult<Unit>
+    suspend fun saveArticle(article: Article): DataResult<Unit>
 }

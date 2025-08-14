@@ -80,6 +80,6 @@ class AppModule {
         HeadlinesRepositoryImpl(newsApiService, articleDao)
 
     @Provides
-    fun savedArticlesRepository(): SavedArticlesRepository =
-        SavedArticlesRepositoryImpl()
+    fun savedArticlesRepository(articleDao: ArticleDao): SavedArticlesRepository =
+        SavedArticlesRepositoryImpl(articleDao)
 }
