@@ -27,6 +27,7 @@ konsist_version = "0.17.3"
 room_version = "2.7.2"
 mockk_version = "1.14.5"
 timber_version = "5.0.1"
+turbine_version = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -67,6 +68,7 @@ room-testing = { group = "androidx.room", name = "room-testing", version.ref = "
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room_version"}
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk_version"}
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber_version"}
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine_version"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

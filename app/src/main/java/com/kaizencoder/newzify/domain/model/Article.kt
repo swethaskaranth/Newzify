@@ -6,7 +6,7 @@ data class Article(
     val byline: String,
     val thumbnail: String,
     val shortUrl: String,
-    val webUrl: String,
     val webTitle: String,
-    val webPublicationDate: String
+    val webUrl: String,
+    val timeSincePublished: String
 )

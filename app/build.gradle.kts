@@ -111,8 +111,11 @@ dependencies {
     testImplementation(libs.room.testing)
 
     testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk)
 
     implementation(libs.timber)
+    testImplementation(libs.turbine)
+    testImplementation(kotlin("test"))
 
 }
 
