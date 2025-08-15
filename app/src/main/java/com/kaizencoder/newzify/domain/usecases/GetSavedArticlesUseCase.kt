@@ -18,7 +18,9 @@ class GetSavedArticlesUseCase @Inject constructor(
     @Suppress("TooGenericExceptionCaught")
     suspend fun execute(): GetSavedArticlesUseCaseResult {
         try {
+            Timber.i("GetSavedArticlesUseCase called")
             val result = savedArticlesRepository.getSavedArticles()
+            Timber.i("GetSavedArticlesUseCase returned - $result")
             return when (result) {
                 is DataResult.Success -> {
                     GetSavedArticlesUseCaseResult.Success(result.data)
