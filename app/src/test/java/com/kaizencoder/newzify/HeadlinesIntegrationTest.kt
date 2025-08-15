@@ -5,6 +5,7 @@ import com.kaizencoder.newzify.data.DataResult
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.domain.repository.HeadlinesRepository
 import com.kaizencoder.newzify.domain.usecases.GetHeadlinesUseCase
+import com.kaizencoder.newzify.domain.usecases.SaveArticlesUseCase
 import com.kaizencoder.newzify.presentation.headlines.HeadlinesViewModel
 import io.mockk.every
 import io.mockk.mockk
@@ -29,7 +30,10 @@ class HeadlinesIntegrationTest {
     private val mockHeadlinesRepository : HeadlinesRepository = mockk()
     private val getHeadlinesUseCase : GetHeadlinesUseCase =
         GetHeadlinesUseCase(mockHeadlinesRepository)
-    private val headlinesViewModel: HeadlinesViewModel = HeadlinesViewModel(getHeadlinesUseCase)
+    private val mockedSavedArticleUseCase : SaveArticlesUseCase = mockk()
+    private val headlinesViewModel: HeadlinesViewModel = HeadlinesViewModel(
+        getHeadlinesUseCase,
+        mockedSavedArticleUseCase)
 
     @Before
     fun setup(){

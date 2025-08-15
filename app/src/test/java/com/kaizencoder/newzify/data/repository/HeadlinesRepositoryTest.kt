@@ -96,6 +96,23 @@ class HeadlinesRepositoryTest {
     }
 
     @Test
+    fun headLinesRepository_getHeadlines_clearsExistingDataWhenAPIReturnsSuccess() = runTest {
+        every { articleDao.getHeadlines() } returns
+                articleEntities
+                    .map {
+                        it.copy(
+                            savedAt = System.currentTimeMillis() - timeToLive - 1
+                        )
+                    } andThen freshArticleEntities
+
+        coEvery { articleDao.insert(any()) } returns Unit
+        coEvery { newsApiService.getLatestHeadlines(any()) } returns headlinesResponse
+
+        headlinesRepository.getHeadlines().last()
+        coVerify(exactly = 1) { articleDao.clearCachedArticles() }
+    }
+
+    @Test
     fun headlinesRepository_getHeadlines_returnsFreshHeadlinesWhenCacheWriteSuccessful() = runTest {
         every { articleDao.getHeadlines() } returns
             articleEntities

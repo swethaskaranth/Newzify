@@ -7,7 +7,9 @@ import com.kaizencoder.newzify.data.local.AppDatabase
 import com.kaizencoder.newzify.data.local.ArticleDao
 import com.kaizencoder.newzify.data.networking.NewsApiService
 import com.kaizencoder.newzify.data.repository.HeadlinesRepositoryImpl
+import com.kaizencoder.newzify.data.repository.SavedArticlesRepositoryImpl
 import com.kaizencoder.newzify.domain.repository.HeadlinesRepository
+import com.kaizencoder.newzify.domain.repository.SavedArticlesRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -76,4 +78,8 @@ class AppModule {
         articleDao: ArticleDao
     ): HeadlinesRepository =
         HeadlinesRepositoryImpl(newsApiService, articleDao)
+
+    @Provides
+    fun savedArticlesRepository(articleDao: ArticleDao): SavedArticlesRepository =
+        SavedArticlesRepositoryImpl(articleDao)
 }

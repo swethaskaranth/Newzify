@@ -76,6 +76,7 @@ class HeadlinesRepositoryImpl @Inject constructor(
         val response = newsApiService.getLatestHeadlines().response
         if (response.results.isNotEmpty()) {
             val articlesToInsert = response.results.map { it.toArticleEntity() }
+            articleDao.clearCachedArticles()
             articleDao.insert(articlesToInsert)
             val articles = getArticlesFromDb().map { article -> article.toArticleDomain() }
             return DataResult.Success(articles)
