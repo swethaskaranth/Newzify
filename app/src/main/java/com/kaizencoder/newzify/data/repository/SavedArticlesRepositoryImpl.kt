@@ -3,6 +3,7 @@ package com.kaizencoder.newzify.data.repository
 import androidx.sqlite.SQLiteException
 import com.kaizencoder.newzify.data.DataResult
 import com.kaizencoder.newzify.data.local.ArticleDao
+import com.kaizencoder.newzify.data.local.entity.toArticleDomain
 import com.kaizencoder.newzify.data.local.entity.toArticleEntity
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.domain.repository.SavedArticlesRepository
@@ -17,21 +18,35 @@ class SavedArticlesRepositoryImpl @Inject constructor(
 
     @Suppress("TooGenericExceptionCaught")
     override suspend fun saveArticle(article: Article): DataResult<Unit> {
-         return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             try {
                 articleDao.saveArticle(article.toArticleEntity(true))
                 DataResult.Success(Unit)
-            }catch (ex: SQLiteException){
-                Timber.e(ex,"Error saving article")
+            } catch (ex: SQLiteException) {
+                Timber.e(ex, "Error saving article")
                 DataResult.CacheError
-            }catch(ex: Exception){
-                Timber.e(ex,"Error saving article")
+            } catch (ex: Exception) {
+                Timber.e(ex, "Error saving article")
                 DataResult.GenericError(ex.message ?: "Something is not right. Please try again.")
             }
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun getSavedArticles(): DataResult<List<Article>> {
-        return DataResult.Success(emptyList())
+        return withContext(Dispatchers.IO) {
+            try {
+                val articles = articleDao.getSavedArticles()
+                DataResult.Success(articles.map { it.toArticleDomain() })
+            } catch (ex: SQLiteException) {
+                Timber.e(ex, "Error getting saved articles")
+                DataResult.CacheError
+            } catch (ex: Exception) {
+                Timber.e(ex, "Error saving article")
+                DataResult.GenericError(ex.message ?: "Something is not right. Please try again.")
+            }
+
+        }
+
     }
 }
