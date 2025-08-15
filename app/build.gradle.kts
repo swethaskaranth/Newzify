@@ -23,12 +23,12 @@ val baseUrl: String = localProperties.getProperty("BASE_URL") ?: ""
 
 android {
     namespace = "com.kaizencoder.newzify"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.kaizencoder.newzify"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -116,6 +116,8 @@ dependencies {
     implementation(libs.timber)
     testImplementation(libs.turbine)
     testImplementation(kotlin("test"))
+
+    implementation(libs.androidx.browser)
 
 }
 

@@ -1,5 +1,6 @@
 package com.kaizencoder.newzify.presentation.savedArticles
 
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaizencoder.newzify.presentation.common.ArticleItem
@@ -23,7 +26,7 @@ fun SavedArticlesScreen(
     modifier: Modifier = Modifier,
     viewModel: SavedArticlesViewModel = hiltViewModel()
 ) {
-
+    val context = LocalContext.current
     val uiState: UiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
     LaunchedEffect(true) {
@@ -64,7 +67,14 @@ fun SavedArticlesScreen(
             ) {
                 items(uiState.articles) { article ->
 
-                    ArticleItem(article) { }
+                    ArticleItem(article,
+                        onShareClick = { },
+                        onCardClick = {
+                            val customTabsIntent = CustomTabsIntent.Builder()
+                                .setShowTitle(true)
+                                .build()
+                            customTabsIntent.launchUrl(context, article.webUrl.toUri())
+                        })
                 }
             }
         }

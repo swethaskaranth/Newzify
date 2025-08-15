@@ -1,5 +1,7 @@
 package com.kaizencoder.newzify.presentation.headlines
 
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,11 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.presentation.common.ArticleItem
+import androidx.core.net.toUri
 
 @Composable
 fun HeadlinesScreen(
@@ -26,6 +30,7 @@ fun HeadlinesScreen(
     headlinesViewModel: HeadlinesViewModel = hiltViewModel()
 ) {
 
+    val context = LocalContext.current
     val uiState = headlinesViewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(true) {
@@ -66,9 +71,17 @@ fun HeadlinesScreen(
                 modifier.fillMaxSize()
             ) {
                 items(uiState.value.articles) { article ->
-                    ArticleItem(article) {
-                        headlinesViewModel.saveHeadlines(article)
-                    }
+                    ArticleItem(
+                        article,
+                        onShareClick = {
+                            headlinesViewModel.saveHeadlines(article)
+                        },
+                        onCardClick = {
+                            val customTabsIntent = CustomTabsIntent.Builder()
+                                .setShowTitle(true)
+                                .build()
+                            customTabsIntent.launchUrl(context, article.webUrl.toUri())
+                        })
                 }
             }
         }
@@ -89,8 +102,5 @@ private fun ArticleItemPreview() {
             "WebUrl",
             "WebTitle",
             "1d"
-        )
-    ) {
-
-    }
+        ), {}, {})
 }

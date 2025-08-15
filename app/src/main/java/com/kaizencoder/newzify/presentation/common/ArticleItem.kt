@@ -15,10 +15,12 @@ import com.kaizencoder.newzify.domain.model.Article
 @Composable
 fun ArticleItem(
     article: Article,
-    onShareClick: () -> Unit
+    onShareClick: () -> Unit,
+    onCardClick: () -> Unit
 ) {
     Card(
-        shape = RectangleShape
+        shape = RectangleShape,
+        onClick = onCardClick
     ) {
         Column {
 
