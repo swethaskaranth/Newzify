@@ -15,6 +15,7 @@ import com.kaizencoder.newzify.domain.model.Article
 @Composable
 fun ArticleItem(
     article: Article,
+    onSaveClick: () -> Unit,
     onShareClick: () -> Unit
 ) {
     Card(
@@ -38,6 +39,7 @@ fun ArticleItem(
 
             ArticleInfo(
                 article,
+                onSaveClick,
                 onShareClick
             )
         }
