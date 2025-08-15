@@ -1,5 +1,6 @@
 package com.kaizencoder.newzify.presentation.headlines
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,6 +28,7 @@ fun HeadlinesScreen(
     headlinesViewModel: HeadlinesViewModel = hiltViewModel()
 ) {
 
+    val context = LocalContext.current
     val uiState = headlinesViewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(true) {
@@ -66,9 +69,21 @@ fun HeadlinesScreen(
                 modifier.fillMaxSize()
             ) {
                 items(uiState.value.articles) { article ->
-                    ArticleItem(article) {
-                        headlinesViewModel.saveHeadlines(article)
-                    }
+                    ArticleItem(
+                        article,
+                        onSaveClick = {
+                            headlinesViewModel.saveHeadlines(article)
+                        },
+                        onShareClick = {
+                            val shareContent = headlinesViewModel.shareArticle(article)
+                            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_SUBJECT, shareContent.title)
+                                putExtra(Intent.EXTRA_TEXT, "${shareContent.title}\n${shareContent.url}")
+                            }
+                            val shareIntent = Intent.createChooser(sendIntent, null)
+                            context.startActivity(shareIntent)
+                        })
                 }
             }
         }
@@ -90,7 +105,5 @@ private fun ArticleItemPreview() {
             "WebTitle",
             "1d"
         )
-    ) {
-
-    }
+    , {},{})
 }

@@ -64,7 +64,7 @@ fun SavedArticlesScreen(
             ) {
                 items(uiState.articles) { article ->
 
-                    ArticleItem(article) { }
+                    ArticleItem(article, { }, {})
                 }
             }
         }

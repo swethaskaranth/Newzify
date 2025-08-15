@@ -16,6 +16,7 @@ import com.kaizencoder.newzify.domain.model.Article
 @Composable
 fun ArticleInfo(
     article: Article,
+    onSaveClick: () -> Unit,
     onShareClick: () -> Unit
 ) {
     Row(
@@ -36,14 +37,13 @@ fun ArticleInfo(
             ArticleAction(
                 id = R.drawable.icon_save,
                 contentDescription = stringResource(R.string.save_icon_content_description),
-                onClick = onShareClick
+                onClick = onSaveClick
             )
             ArticleAction(
                 id = R.drawable.icon_share,
+                onClick = onShareClick,
                 contentDescription = stringResource(R.string.share_icon_content_description)
-            ) {
-
-            }
+            )
         }
 
     }
