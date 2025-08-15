@@ -30,4 +30,8 @@ class SavedArticlesRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun getSavedArticles(): DataResult<List<Article>> {
+        return DataResult.Success(emptyList())
+    }
 }
