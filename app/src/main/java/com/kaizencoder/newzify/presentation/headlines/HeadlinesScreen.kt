@@ -1,5 +1,6 @@
 package com.kaizencoder.newzify.presentation.headlines
 
+import androidx.browser.customtabs.CustomTabsIntent
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.presentation.common.ArticleItem
+import androidx.core.net.toUri
 
 @Composable
 fun HeadlinesScreen(
@@ -79,10 +81,19 @@ fun HeadlinesScreen(
                             val sendIntent = Intent(Intent.ACTION_SEND).apply {
                                 type = "text/plain"
                                 putExtra(Intent.EXTRA_SUBJECT, shareContent.title)
-                                putExtra(Intent.EXTRA_TEXT, "${shareContent.title}\n${shareContent.url}")
+                                putExtra(
+                                    Intent.EXTRA_TEXT,
+                                    "${shareContent.title}\n${shareContent.url}"
+                                )
                             }
                             val shareIntent = Intent.createChooser(sendIntent, null)
                             context.startActivity(shareIntent)
+                        },
+                        onCardClick = {
+                            val customTabsIntent = CustomTabsIntent.Builder()
+                                .setShowTitle(true)
+                                .build()
+                            customTabsIntent.launchUrl(context, article.webUrl.toUri())
                         })
                 }
             }
@@ -104,6 +115,5 @@ private fun ArticleItemPreview() {
             "WebUrl",
             "WebTitle",
             "1d"
-        )
-    , {},{})
+        ), {}, {}, {})
 }

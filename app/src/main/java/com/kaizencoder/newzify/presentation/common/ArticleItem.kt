@@ -16,10 +16,12 @@ import com.kaizencoder.newzify.domain.model.Article
 fun ArticleItem(
     article: Article,
     onSaveClick: () -> Unit,
-    onShareClick: () -> Unit
+    onShareClick: () -> Unit,
+    onCardClick: () -> Unit
 ) {
     Card(
-        shape = RectangleShape
+        shape = RectangleShape,
+        onClick = onCardClick
     ) {
         Column {
 
