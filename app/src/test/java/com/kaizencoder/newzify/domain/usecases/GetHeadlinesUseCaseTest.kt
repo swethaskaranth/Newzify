@@ -42,7 +42,8 @@ class GetHeadlinesUseCaseTest {
     fun `getHeadlines should emit a list of articles when repository call is successful`() = runTest {
         every { headlinesRepositoryMock.getHeadlines() } returns flowOf(
             DataResult.Success<List<Article>>(
-                listOf(Article("ID1","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate"),
+                listOf(
+                    Article("ID1","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate"),
                     Article("ID2","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate"),
                     Article("ID3","Headline","Byline", "Thumbnail", "ShortUrl","WebUrl","WebTitle","PublishedDate"))
             )

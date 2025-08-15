@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.kaizencoder.newzify.domain.model.Article
 import com.kaizencoder.newzify.domain.usecases.GetHeadlinesUseCase
 import com.kaizencoder.newzify.domain.usecases.SaveArticlesUseCase
+import com.kaizencoder.newzify.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +23,8 @@ class HeadlinesViewModel @Inject constructor(
     private val getHeadlinesUseCase: GetHeadlinesUseCase,
     private val saveHeadlinesUseCase: SaveArticlesUseCase): ViewModel() {
 
-    private val _uiState = MutableStateFlow(HeadlinesUiState())
-    val uiState: StateFlow<HeadlinesUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     private val _savedEvent = MutableSharedFlow<String>(replay = 1)
     val savedEvent: SharedFlow<String> = _savedEvent.asSharedFlow()
@@ -36,10 +37,10 @@ class HeadlinesViewModel @Inject constructor(
                             _uiState.value = _uiState.value.copy(isLoading = true)
                         }
                         is GetHeadlinesUseCase.GetHeadlinesUseCaseResult.Success -> {
-                            _uiState.value = HeadlinesUiState(articles = useCaseResult.articles)
+                            _uiState.value = UiState(articles = useCaseResult.articles)
                         }
                         is GetHeadlinesUseCase.GetHeadlinesUseCaseResult.Error -> {
-                            _uiState.value = HeadlinesUiState(errorMessage = useCaseResult.message)
+                            _uiState.value = UiState(errorMessage = useCaseResult.message)
                         }
                     }
                 }

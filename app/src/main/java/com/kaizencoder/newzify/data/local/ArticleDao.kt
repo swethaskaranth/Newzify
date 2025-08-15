@@ -22,4 +22,7 @@ interface ArticleDao {
 
     @Query("DELETE FROM article where saved_by_user = 0")
     suspend fun clearCachedArticles()
+
+    @Query("SELECT * FROM article where saved_by_user = 1")
+    fun getSavedArticles(): List<Article>
 }
