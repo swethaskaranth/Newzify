@@ -68,6 +68,7 @@ fun SavedArticlesScreen(
                 items(uiState.articles) { article ->
 
                     ArticleItem(article,
+                        onSaveClick = {},
                         onShareClick = { },
                         onCardClick = {
                             val customTabsIntent = CustomTabsIntent.Builder()

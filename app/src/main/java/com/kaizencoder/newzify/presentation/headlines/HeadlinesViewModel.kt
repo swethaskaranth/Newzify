@@ -3,8 +3,10 @@ package com.kaizencoder.newzify.presentation.headlines
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaizencoder.newzify.domain.model.Article
+import com.kaizencoder.newzify.domain.model.ShareContent
 import com.kaizencoder.newzify.domain.usecases.GetHeadlinesUseCase
 import com.kaizencoder.newzify.domain.usecases.SaveArticlesUseCase
+import com.kaizencoder.newzify.domain.usecases.ShareArticleUseCase
 import com.kaizencoder.newzify.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HeadlinesViewModel @Inject constructor(
     private val getHeadlinesUseCase: GetHeadlinesUseCase,
-    private val saveHeadlinesUseCase: SaveArticlesUseCase): ViewModel() {
+    private val saveHeadlinesUseCase: SaveArticlesUseCase,
+    private val shareArticleUseCase: ShareArticleUseCase): ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -59,6 +62,10 @@ class HeadlinesViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun shareArticle(article: Article): ShareContent {
+        return shareArticleUseCase.execute(article)
     }
 
 

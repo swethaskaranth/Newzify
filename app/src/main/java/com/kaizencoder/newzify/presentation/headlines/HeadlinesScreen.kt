@@ -1,7 +1,7 @@
 package com.kaizencoder.newzify.presentation.headlines
 
-import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -73,8 +73,21 @@ fun HeadlinesScreen(
                 items(uiState.value.articles) { article ->
                     ArticleItem(
                         article,
-                        onShareClick = {
+                        onSaveClick = {
                             headlinesViewModel.saveHeadlines(article)
+                        },
+                        onShareClick = {
+                            val shareContent = headlinesViewModel.shareArticle(article)
+                            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_SUBJECT, shareContent.title)
+                                putExtra(
+                                    Intent.EXTRA_TEXT,
+                                    "${shareContent.title}\n${shareContent.url}"
+                                )
+                            }
+                            val shareIntent = Intent.createChooser(sendIntent, null)
+                            context.startActivity(shareIntent)
                         },
                         onCardClick = {
                             val customTabsIntent = CustomTabsIntent.Builder()
@@ -102,5 +115,5 @@ private fun ArticleItemPreview() {
             "WebUrl",
             "WebTitle",
             "1d"
-        ), {}, {})
+        ), {}, {}, {})
 }
