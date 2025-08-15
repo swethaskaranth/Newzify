@@ -98,7 +98,7 @@ class SavedArticlesRepositoryTest {
     }
 
     @Test
-    fun getSavedArticlesRepository_getSavedArticles_returnsGenericErrorWithMessage_whenRuntimeExceptionThrown() = runTest {
+    fun getSavedArticles_returnsGenericErrorWithMessage_whenRuntimeExceptionThrown() = runTest {
         coEvery { articleDao.getSavedArticles() } throws RuntimeException("Illegal argument")
         val result = savedArticlesRepository.getSavedArticles()
 
