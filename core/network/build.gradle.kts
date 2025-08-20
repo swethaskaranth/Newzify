@@ -1,7 +1,18 @@
+import java.io.FileInputStream
+import java.util.Properties
+import kotlin.apply
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
+
+val localProperties = Properties().apply {
+    load(FileInputStream(rootProject.file("local.properties")))
+}
+
+
+val apiKey: String = localProperties.getProperty("API_KEY") ?: ""
 
 android {
     namespace = "com.kaizencoder.core.network"
@@ -12,6 +23,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
 
     buildTypes {
@@ -30,6 +42,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -41,5 +56,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation(libs.retrofit)
+    implementation(libs.moshi.converter)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.http.logging.interceptor)
+
+    implementation(project(":core:database"))
 
 }

@@ -119,6 +119,8 @@ dependencies {
 
     implementation(libs.androidx.browser)
 
+    implementation(project(":core:domain"))
+
 }
 
 detekt {

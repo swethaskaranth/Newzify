@@ -2,11 +2,11 @@ package com.kaizencoder.newzify.presentation.headlines
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kaizencoder.newzify.domain.model.Article
-import com.kaizencoder.newzify.domain.model.ShareContent
-import com.kaizencoder.newzify.domain.usecases.GetHeadlinesUseCase
-import com.kaizencoder.newzify.domain.usecases.SaveArticlesUseCase
-import com.kaizencoder.newzify.domain.usecases.ShareArticleUseCase
+import com.kaizencoder.newzify.core.domain.model.Article
+import com.kaizencoder.newzify.core.domain.model.ShareContent
+import com.kaizencoder.newzify.core.domain.usecases.GetHeadlinesUseCase
+import com.kaizencoder.newzify.core.domain.usecases.SaveArticlesUseCase
+import com.kaizencoder.newzify.core.domain.usecases.ShareArticleUseCase
 import com.kaizencoder.newzify.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

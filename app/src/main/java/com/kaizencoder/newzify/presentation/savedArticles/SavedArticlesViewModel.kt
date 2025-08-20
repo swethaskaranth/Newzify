@@ -2,7 +2,7 @@ package com.kaizencoder.newzify.presentation.savedArticles
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kaizencoder.newzify.domain.usecases.GetSavedArticlesUseCase
+import com.kaizencoder.newzify.core.domain.usecases.GetSavedArticlesUseCase
 import com.kaizencoder.newzify.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

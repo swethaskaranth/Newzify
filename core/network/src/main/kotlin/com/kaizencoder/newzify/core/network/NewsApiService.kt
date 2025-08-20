@@ -1,5 +1,6 @@
 package com.kaizencoder.newzify.core.network
 
+import com.kaizencoder.core.network.BuildConfig
 import com.kaizencoder.newzify.core.network.dto.HeadlinesResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
