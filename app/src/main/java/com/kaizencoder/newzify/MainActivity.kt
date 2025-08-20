@@ -28,7 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.kaizencoder.newzify.presentation.headlines.HeadlinesScreen
 import com.kaizencoder.newzify.presentation.navigation.Route
 import com.kaizencoder.newzify.presentation.savedArticles.SavedArticlesScreen
-import com.kaizencoder.newzify.ui.theme.NewzifyTheme
+import com.kaizencoder.newzify.presentation.theme.NewzifyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.kaizencoder.newzify.ui.theme
+package com.kaizencoder.newzify.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

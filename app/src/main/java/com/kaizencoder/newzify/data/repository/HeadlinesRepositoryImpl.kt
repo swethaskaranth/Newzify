@@ -6,8 +6,10 @@ import com.kaizencoder.newzify.data.DataResult
 import com.kaizencoder.newzify.data.local.ArticleDao
 import com.kaizencoder.newzify.data.local.entity.toArticleDomain
 import com.kaizencoder.newzify.data.networking.NewsApiService
+import com.kaizencoder.newzify.data.networking.dto.ResponseDto
 import com.kaizencoder.newzify.data.networking.dto.toArticleEntity
 import com.kaizencoder.newzify.domain.model.Article
+import com.kaizencoder.newzify.domain.repository.CachePolicy
 import com.kaizencoder.newzify.domain.repository.HeadlinesRepository
 import com.squareup.moshi.JsonDataException
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +25,8 @@ import com.kaizencoder.newzify.data.local.entity.Article as ArticleEntity
 
 class HeadlinesRepositoryImpl @Inject constructor(
     private val newsApiService: NewsApiService,
-    private val articleDao: ArticleDao
+    private val articleDao: ArticleDao,
+    private val cachePolicy: CachePolicy
 ) :
     HeadlinesRepository {
 
@@ -38,7 +41,7 @@ class HeadlinesRepositoryImpl @Inject constructor(
                 }
             ))
 
-        if (articles.isEmpty() || articles[0].savedAt < System.currentTimeMillis() - Constants.TIME_TO_LIVE)
+        if (articles.isEmpty() || cachePolicy.hasCacheExpired(articles[0].savedAt) )
             emit(fetchAndSaveArticles())
 
 
@@ -75,13 +78,20 @@ class HeadlinesRepositoryImpl @Inject constructor(
     private suspend fun fetchAndSaveArticles(): DataResult<List<Article>> {
         val response = newsApiService.getLatestHeadlines().response
         if (response.results.isNotEmpty()) {
-            val articlesToInsert = response.results.map { it.toArticleEntity() }
-            articleDao.clearCachedArticles()
-            articleDao.insert(articlesToInsert)
-            val articles = getArticlesFromDb().map { article -> article.toArticleDomain() }
-            return DataResult.Success(articles)
+            return insertArticles(response)
         } else
             return DataResult.Success(emptyList())
+    }
+
+    private suspend fun insertArticles(response: ResponseDto): DataResult.Success<List<Article>> {
+        val articlesToInsert = response.results.map { it.toArticleEntity() }
+        replaceArticlesCache(articlesToInsert)
+        return DataResult.Success(getArticlesFromDb().map { article -> article.toArticleDomain() })
+    }
+
+    private suspend fun replaceArticlesCache(articlesToInsert: List<ArticleEntity>){
+        articleDao.clearCachedArticles()
+        articleDao.insert(articlesToInsert)
     }
 
     private fun getArticlesFromDb(): List<ArticleEntity> {
