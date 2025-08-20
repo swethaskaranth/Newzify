@@ -21,4 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Newzify"
 include(":app")
- 
+include(":core:domain")
+include(":database")
+include(":network")
+include(":common")
