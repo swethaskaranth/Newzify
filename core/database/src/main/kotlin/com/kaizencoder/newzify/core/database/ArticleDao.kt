@@ -1,12 +1,11 @@
-package com.kaizencoder.newzify.data.local
+package com.kaizencoder.newzify.core.database
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.kaizencoder.newzify.data.local.entity.Article
+import com.kaizencoder.newzify.core.database.entity.Article
 
 @Dao
 interface ArticleDao {

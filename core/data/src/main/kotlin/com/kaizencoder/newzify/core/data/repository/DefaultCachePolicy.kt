@@ -1,7 +1,7 @@
-package com.kaizencoder.newzify.data.repository
+package com.kaizencoder.newzify.core.data.repository
 
-import com.kaizencoder.newzify.Constants
-import com.kaizencoder.newzify.domain.repository.CachePolicy
+import com.kaizencoder.newzify.core.common.Constants
+import com.kaizencoder.newzify.core.domain.repository.CachePolicy
 
 class DefaultCachePolicy: CachePolicy {
 

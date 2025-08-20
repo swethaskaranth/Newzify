@@ -1,4 +1,4 @@
-package com.kaizencoder.newzify.data.networking.dto
+package com.kaizencoder.newzify.core.network.dto
 
 
 import com.squareup.moshi.Json

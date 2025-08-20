@@ -1,7 +1,8 @@
 package com.kaizencoder.newzify.core.domain.usecases
 
-import com.kaizencoder.newzify.domain.model.Article
-import com.kaizencoder.newzify.domain.model.ShareContent
+import com.kaizencoder.newzify.core.domain.model.Article
+import com.kaizencoder.newzify.core.domain.model.ShareContent
+
 import javax.inject.Inject
 
 class ShareArticleUseCase @Inject constructor() {

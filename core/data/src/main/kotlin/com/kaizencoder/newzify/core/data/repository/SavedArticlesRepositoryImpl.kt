@@ -1,19 +1,20 @@
-package com.kaizencoder.newzify.data.repository
+package com.kaizencoder.newzify.core.data.repository
 
 import androidx.sqlite.SQLiteException
-import com.kaizencoder.newzify.data.DataResult
-import com.kaizencoder.newzify.data.local.ArticleDao
-import com.kaizencoder.newzify.data.local.entity.toArticleDomain
-import com.kaizencoder.newzify.data.local.entity.toArticleEntity
-import com.kaizencoder.newzify.domain.model.Article
-import com.kaizencoder.newzify.domain.repository.SavedArticlesRepository
+import com.kaizencoder.newzify.core.common.DataResult
+import com.kaizencoder.newzify.core.domain.model.Article
+import com.kaizencoder.newzify.core.domain.repository.Logger
+import com.kaizencoder.newzify.core.domain.repository.SavedArticlesRepository
+import com.kaizencoder.newzify.core.database.ArticleDao
+import com.kaizencoder.newzify.core.database.entity.toArticleDomain
+import com.kaizencoder.newzify.core.database.entity.toArticleEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 
 class SavedArticlesRepositoryImpl @Inject constructor(
-    private val articleDao: ArticleDao
+    private val articleDao: ArticleDao,
+    private val logger: Logger
 ) : SavedArticlesRepository {
 
     @Suppress("TooGenericExceptionCaught")
@@ -23,10 +24,10 @@ class SavedArticlesRepositoryImpl @Inject constructor(
                 articleDao.saveArticle(article.toArticleEntity(true))
                 DataResult.Success(Unit)
             } catch (ex: SQLiteException) {
-                Timber.e(ex, "Error saving article")
+                logger.e(ex, "Error saving article")
                 DataResult.CacheError
             } catch (ex: Exception) {
-                Timber.e(ex, "Error saving article")
+                logger.e(ex, "Error saving article")
                 DataResult.GenericError(ex.message ?: "Something is not right. Please try again.")
             }
         }
@@ -39,10 +40,10 @@ class SavedArticlesRepositoryImpl @Inject constructor(
                 val articles = articleDao.getSavedArticles()
                 DataResult.Success(articles.map { it.toArticleDomain() })
             } catch (ex: SQLiteException) {
-                Timber.e(ex, "Error getting saved articles")
+                logger.e(ex, "Error getting saved articles")
                 DataResult.CacheError
             } catch (ex: Exception) {
-                Timber.e(ex, "Error saving article")
+                logger.e(ex, "Error saving article")
                 DataResult.GenericError(ex.message ?: "Something is not right. Please try again.")
             }
 

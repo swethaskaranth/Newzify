@@ -1,4 +1,4 @@
-package com.kaizencoder.newzify.data.local.entity
+package com.kaizencoder.newzify.core.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -20,7 +20,7 @@ data class Article(
 )
 
 fun Article.toArticleDomain() =
-    com.kaizencoder.newzify.domain.model.Article(
+    com.kaizencoder.newzify.core.domain.model.Article(
         articleId = this.articleId,
         headline = this.headline,
         byline = this.byline,
@@ -31,7 +31,7 @@ fun Article.toArticleDomain() =
         timeSincePublished = this.webPublicationDate
     )
 
-fun com.kaizencoder.newzify.domain.model.Article.toArticleEntity(savedByUser: Boolean = false) = Article(
+fun com.kaizencoder.newzify.core.domain.model.Article.toArticleEntity(savedByUser: Boolean = false) = Article(
     articleId = this.articleId,
     headline = this.headline,
     byline = this.byline,

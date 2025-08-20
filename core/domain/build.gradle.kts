@@ -9,7 +9,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":common"))
+    implementation(project(":core:common"))
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
 

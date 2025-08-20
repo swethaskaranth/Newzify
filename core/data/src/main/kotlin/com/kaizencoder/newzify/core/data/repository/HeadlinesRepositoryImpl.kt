@@ -1,16 +1,16 @@
-package com.kaizencoder.newzify.data.repository
+package com.kaizencoder.newzify.core.data.repository
 
 import androidx.sqlite.SQLiteException
-import com.kaizencoder.newzify.Constants
-import com.kaizencoder.newzify.data.DataResult
-import com.kaizencoder.newzify.data.local.ArticleDao
-import com.kaizencoder.newzify.data.local.entity.toArticleDomain
-import com.kaizencoder.newzify.data.networking.NewsApiService
-import com.kaizencoder.newzify.data.networking.dto.ResponseDto
-import com.kaizencoder.newzify.data.networking.dto.toArticleEntity
-import com.kaizencoder.newzify.domain.model.Article
-import com.kaizencoder.newzify.domain.repository.CachePolicy
-import com.kaizencoder.newzify.domain.repository.HeadlinesRepository
+import com.kaizencoder.newzify.core.common.DataResult
+import com.kaizencoder.newzify.core.database.ArticleDao
+import com.kaizencoder.newzify.core.domain.model.Article
+import com.kaizencoder.newzify.core.domain.repository.CachePolicy
+import com.kaizencoder.newzify.core.domain.repository.HeadlinesRepository
+import com.kaizencoder.newzify.core.domain.repository.Logger
+import com.kaizencoder.newzify.core.network.NewsApiService
+import com.kaizencoder.newzify.core.database.entity.toArticleDomain
+import com.kaizencoder.newzify.core.network.dto.ResponseDto
+import com.kaizencoder.newzify.core.network.dto.toArticleEntity
 import com.squareup.moshi.JsonDataException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -19,14 +19,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okio.IOException
 import retrofit2.HttpException
-import timber.log.Timber
 import javax.inject.Inject
-import com.kaizencoder.newzify.data.local.entity.Article as ArticleEntity
+import com.kaizencoder.newzify.core.database.entity.Article as ArticleEntity
 
 class HeadlinesRepositoryImpl @Inject constructor(
     private val newsApiService: NewsApiService,
     private val articleDao: ArticleDao,
-    private val cachePolicy: CachePolicy
+    private val cachePolicy: CachePolicy,
+    private val logger: Logger
 ) :
     HeadlinesRepository {
 
@@ -48,27 +48,27 @@ class HeadlinesRepositoryImpl @Inject constructor(
     }.catch { exception ->
         when (exception) {
             is IllegalStateException -> {
-                Timber.e(exception, "IllegalStateException in HeadlinesRepository")
+                logger.e(exception, "IllegalStateException in HeadlinesRepository")
                 emit(DataResult.CacheError)
             }
 
             is SQLiteException -> {
-                Timber.e(exception, "SQLiteException in HeadlinesRepository")
+                logger.e(exception, "SQLiteException in HeadlinesRepository")
                 emit(DataResult.CacheError)
             }
 
             is HttpException -> {
-                Timber.e(exception, "HttpException in HeadlinesRepository")
+                logger.e(exception, "HttpException in HeadlinesRepository")
                 emit(DataResult.NetworkError)
             }
 
             is IOException -> {
-                Timber.e(exception, "IOException in HeadlinesRepository")
+                logger.e(exception, "IOException in HeadlinesRepository")
                 emit(DataResult.NetworkError)
             }
 
             is JsonDataException -> {
-                Timber.e(exception, "HttpException in HeadlinesRepository")
+                logger.e(exception, "HttpException in HeadlinesRepository")
                 emit(DataResult.NetworkError)
             }
         }
@@ -84,7 +84,7 @@ class HeadlinesRepositoryImpl @Inject constructor(
     }
 
     private suspend fun insertArticles(response: ResponseDto): DataResult.Success<List<Article>> {
-        val articlesToInsert = response.results.map { it.toArticleEntity() }
+        val articlesToInsert : List<ArticleEntity> = response.results.map { it.toArticleEntity() }
         replaceArticlesCache(articlesToInsert)
         return DataResult.Success(getArticlesFromDb().map { article -> article.toArticleDomain() })
     }

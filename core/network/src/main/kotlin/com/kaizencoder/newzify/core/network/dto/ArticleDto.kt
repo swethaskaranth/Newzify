@@ -1,7 +1,6 @@
-package com.kaizencoder.newzify.data.networking.dto
+package com.kaizencoder.newzify.core.network.dto
 
 
-import com.kaizencoder.newzify.data.local.entity.Article
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
